@@ -6,6 +6,7 @@
 #
 from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
+import logging
 
 '''
 r \ c     0           1           2           3           4           5           6           7 
@@ -18,6 +19,8 @@ r \ c     0           1           2           3           4           5         
 6   [(r=6, c=0), (r=6, c=1), (r=6, c=2), (r=6, c=3), (r=6, c=4), (r=6, c=5), (r=6, c=6), (r=6, c=7)]
 7   [(r=7, c=0), (r=7, c=1), (r=7, c=2), (r=7, c=3), (r=7, c=4), (r=7, c=5), (r=7, c=6), (r=7, c=7)]
 '''
+
+knight_moves_counter = 0
 
 
 # TODO: Flip the board according to the player
@@ -221,11 +224,15 @@ class game_state:
         all_black_moves = self.get_all_legal_moves(Player.PLAYER_2)
         if self._is_check and self.whose_turn() and not all_white_moves:
             print("white lost")
+            logging.debug('White wins')
+            logging.info('Knights Moves:{}'.format(knight_moves_counter))
             return 0
         elif self._is_check and not self.whose_turn() and not all_black_moves:
             print("black lost")
+            logging.debug('Black wins')
             return 1
         elif not all_white_moves and not all_black_moves:
+            logging.debug('Stalemate')
             return 2
         else:
             return 3
@@ -308,6 +315,7 @@ class game_state:
 
     # Move a piece
     def move_piece(self, starting_square, ending_square, is_ai):
+        global knight_moves_counter
         current_square_row = starting_square[0]  # The integer row value of the starting square
         current_square_col = starting_square[1]  # The integer col value of the starting square
         next_square_row = ending_square[0]  # The integer row value of the ending square
@@ -328,6 +336,7 @@ class game_state:
 
             if ending_square in valid_moves:
                 moved_to_piece = self.get_piece(next_square_row, next_square_col)
+                # Knight move
                 if moving_piece.get_name() is "k":
                     if moving_piece.is_player(Player.PLAYER_1):
                         if moved_to_piece == Player.EMPTY and next_square_col == 1 and self.king_can_castle_left(
@@ -364,6 +373,7 @@ class game_state:
                             self.white_king_can_castle[0] = False
                         self._white_king_location = (next_square_row, next_square_col)
                     else:
+                        knight_moves_counter += 1
                         if moved_to_piece == Player.EMPTY and next_square_col == 1 and self.king_can_castle_left(
                                 moving_piece.get_player()):
                             move = chess_move(starting_square, ending_square, self, self._is_check)
@@ -857,7 +867,7 @@ class game_state:
         return [_checks, _pins, _pins_check]
 
 
-class chess_move():
+class chess_move:
     def __init__(self, starting_square, ending_square, game_state, in_check):
         self.starting_square_row = starting_square[0]
         self.starting_square_col = starting_square[1]

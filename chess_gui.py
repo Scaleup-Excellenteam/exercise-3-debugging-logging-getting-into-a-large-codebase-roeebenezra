@@ -9,6 +9,7 @@ import chess_engine
 import pygame as py
 import ai_engine
 from enums import Player
+import logging
 
 """Variables"""
 WIDTH = HEIGHT = 512  # width and height of the chess board
@@ -17,6 +18,7 @@ SQ_SIZE = HEIGHT // DIMENSION  # the size of each of the squares in the board
 MAX_FPS = 15  # FPS for animations
 IMAGES = {}  # images for the chess pieces
 colors = [py.Color("white"), py.Color("gray")]
+
 
 # TODO: AI black has been worked on. Mirror progress for other two modes
 def load_images():
@@ -82,6 +84,7 @@ def highlight_square(screen, game_state, valid_moves, square_selected):
 
 
 def main():
+    logging.basicConfig(filename='chess.log', level=logging.DEBUG)
     # Check for the number of players and the color of the AI
     human_player = ""
     while True:
@@ -118,8 +121,11 @@ def main():
     ai = ai_engine.chess_ai()
     game_state = chess_engine.game_state()
     if human_player is 'b':
+        logging.debug('ai starts game as white')
         ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
         game_state.move_piece(ai_move[0], ai_move[1], True)
+    else:
+        logging.debug('human_player starts game as white')
 
     while running:
         for e in py.event.get():
@@ -265,3 +271,7 @@ def draw_text(screen, text):
 
 if __name__ == "__main__":
     main()
+    logging.info('Knights Moves:{}'.format(chess_engine.knight_moves_counter))
+
+    import os
+    # os.remove("chess.log")

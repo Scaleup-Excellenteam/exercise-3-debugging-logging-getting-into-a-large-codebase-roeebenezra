@@ -197,6 +197,8 @@ class Knight(Piece):
         #             _moves.append((new_row, new_col))
         # return _moves
         return self.get_valid_peaceful_moves(game_state) + self.get_valid_piece_takes(game_state)
+
+
 # Bishop
 class Bishop(Piece):
     def __init__(self, name, row_number, col_number, player):
@@ -295,7 +297,6 @@ class Bishop(Piece):
             else:
                 self._breaking_point = True
         return (_peaceful_moves, _piece_takes)
-
 
 
 # Pawn
@@ -419,6 +420,7 @@ class Queen(Rook, Bishop):
     def get_valid_piece_moves(self, game_state):
         return (Rook.get_valid_piece_moves(Rook(self.get_name(), self.get_row_number(), self.get_col_number(), self.get_player()), game_state) +
                 Bishop.get_valid_piece_moves(Bishop(self.get_name(), self.get_row_number(), self.get_col_number(), self.get_player()), game_state))
+
 
 # King
 class King(Piece):
