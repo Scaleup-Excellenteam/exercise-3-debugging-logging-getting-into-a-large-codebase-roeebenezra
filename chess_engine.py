@@ -7,7 +7,7 @@
 from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
 
-"""
+'''
 r \ c     0           1           2           3           4           5           6           7 
 0   [(r=0, c=0), (r=0, c=1), (r=0, c=2), (r=0, c=3), (r=0, c=4), (r=0, c=5), (r=0, c=6), (r=0, c=7)]
 1   [(r=1, c=0), (r=1, c=1), (r=1, c=2), (r=1, c=3), (r=1, c=4), (r=1, c=5), (r=1, c=6), (r=1, c=7)]
@@ -17,7 +17,7 @@ r \ c     0           1           2           3           4           5         
 5   [(r=5, c=0), (r=5, c=1), (r=5, c=2), (r=5, c=3), (r=5, c=4), (r=5, c=5), (r=5, c=6), (r=5, c=7)]
 6   [(r=6, c=0), (r=6, c=1), (r=6, c=2), (r=6, c=3), (r=6, c=4), (r=6, c=5), (r=6, c=6), (r=6, c=7)]
 7   [(r=7, c=0), (r=7, c=1), (r=7, c=2), (r=7, c=3), (r=7, c=4), (r=7, c=5), (r=7, c=6), (r=7, c=7)]
-"""
+'''
 
 
 # TODO: Flip the board according to the player
@@ -25,6 +25,7 @@ r \ c     0           1           2           3           4           5         
 # TODO: stalemate
 # TODO: move logs - fix king castle boolean update
 # TODO: change move method argument about is_ai into something more elegant
+
 class game_state:
     # Initialize 2D array to represent the chess board
     def __init__(self):
@@ -43,8 +44,8 @@ class game_state:
         self._white_king_location = [0, 3]
         self._black_king_location = [7, 3]
 
-        # Has king not moved, has Rook1(col=0) not moved, has Rook2(col=7) not moved
-        self.white_king_can_castle = [True, True, True]
+        self.white_king_can_castle = [True, True,
+                                      True]  # Has king not moved, has Rook1(col=0) not moved, has Rook2(col=7) not moved
         self.black_king_can_castle = [True, True, True]
 
         # Initialize White pieces
@@ -64,9 +65,10 @@ class game_state:
         white_pawn_6 = Pawn('p', 1, 5, Player.PLAYER_1)
         white_pawn_7 = Pawn('p', 1, 6, Player.PLAYER_1)
         white_pawn_8 = Pawn('p', 1, 7, Player.PLAYER_1)
-        self.white_pieces = [white_rook_1, white_rook_2, white_knight_1, white_knight_2, white_bishop_1,
-                             white_bishop_2, white_queen, white_king, white_pawn_1, white_pawn_2, white_pawn_3,
-                             white_pawn_4, white_pawn_5, white_pawn_6, white_pawn_7, white_pawn_8]
+        self.white_pieces = [white_rook_1, white_rook_2, white_knight_1, white_knight_2, white_bishop_1, white_bishop_2,
+                             white_queen, white_king, white_pawn_1, white_pawn_2, white_pawn_3, white_pawn_4,
+                             white_pawn_5,
+                             white_pawn_6, white_pawn_7, white_pawn_8]
 
         # Initialize Black Pieces
         black_rook_1 = Rook('r', 7, 0, Player.PLAYER_2)
@@ -85,9 +87,10 @@ class game_state:
         black_pawn_6 = Pawn('p', 6, 5, Player.PLAYER_2)
         black_pawn_7 = Pawn('p', 6, 6, Player.PLAYER_2)
         black_pawn_8 = Pawn('p', 6, 7, Player.PLAYER_2)
-        self.black_pieces = [black_rook_1, black_rook_2, black_knight_1, black_knight_2, black_bishop_1,
-                             black_bishop_2, black_queen, black_king, black_pawn_1, black_pawn_2, black_pawn_3,
-                             black_pawn_4, black_pawn_5, black_pawn_6, black_pawn_7, black_pawn_8]
+        self.black_pieces = [black_rook_1, black_rook_2, black_knight_1, black_knight_2, black_bishop_1, black_bishop_2,
+                             black_queen, black_king, black_pawn_1, black_pawn_2, black_pawn_3, black_pawn_4,
+                             black_pawn_5,
+                             black_pawn_6, black_pawn_7, black_pawn_8]
 
         self.board = [
             [white_rook_1, white_knight_1, white_bishop_1, white_king, white_queen, white_bishop_2, white_knight_2,
@@ -555,17 +558,18 @@ class game_state:
     def whose_turn(self):
         return self.white_turn
 
-    def check_for_check(self, king_location, player):
-        """
-        check for immediate check
-        - check 8 directions and 8 knight squares
-        check for pins
-        - whatever blocked from above is a pin
+    '''
+    check for immediate check
+    - check 8 directions and 8 knight squares
+    check for pins
+    - whatever blocked from above is a pin
 
-         - if immediate check, change check value to true
-         - list valid moves to prevent check but not remove pin
-         - if there are no valid moves to prevent check, checkmate
-        """
+     - if immediate check, change check value to true
+     - list valid moves to prevent check but not remove pin
+     - if there are no valid moves to prevent check, checkmate
+    '''
+
+    def check_for_check(self, king_location, player):
         # self._is_check = False
         _checks = []
         _pins = []
@@ -850,12 +854,11 @@ class game_state:
                                                                                 i]).get_valid_piece_takes(self):
                     # self._is_check = True
                     _checks.append((king_location_row + row_change[i], king_location_col + col_change[i]))
-
         # print([_checks, _pins, _pins_check])
         return [_checks, _pins, _pins_check]
 
 
-class chess_move:
+class chess_move():
     def __init__(self, starting_square, ending_square, game_state, in_check):
         self.starting_square_row = starting_square[0]
         self.starting_square_col = starting_square[1]

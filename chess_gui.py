@@ -7,7 +7,6 @@
 #
 import chess_engine
 import pygame as py
-
 import ai_engine
 from enums import Player
 
@@ -18,7 +17,6 @@ SQ_SIZE = HEIGHT // DIMENSION  # the size of each of the squares in the board
 MAX_FPS = 15  # FPS for animations
 IMAGES = {}  # images for the chess pieces
 colors = [py.Color("white"), py.Color("gray")]
-
 
 # TODO: AI black has been worked on. Mirror progress for other two modes
 def load_images():
@@ -31,7 +29,6 @@ def load_images():
 
 def draw_game_state(screen, game_state, valid_moves, square_selected):
     ''' Draw the complete chess board with pieces
-
     Keyword arguments:
         :param screen       -- the pygame screen
         :param game_state   -- the state of the current chess game
@@ -43,7 +40,6 @@ def draw_game_state(screen, game_state, valid_moves, square_selected):
 
 def draw_squares(screen):
     ''' Draw the chess board with the alternating two colors
-
     :param screen:          -- the pygame screen
     '''
     for r in range(DIMENSION):
@@ -54,7 +50,6 @@ def draw_squares(screen):
 
 def draw_pieces(screen, game_state):
     ''' Draw the chess pieces onto the board
-
     :param screen:          -- the pygame screen
     :param game_state:      -- the current state of the chess game
     '''
@@ -96,7 +91,7 @@ def main():
                 number_of_players = 1
                 while True:
                     human_player = input("What color do you want to play (w or b)?\n")
-                    if human_player == "w" or human_player == "b":
+                    if human_player is "w" or human_player is "b":
                         break
                     else:
                         print("Enter w or b.\n")
@@ -112,7 +107,7 @@ def main():
     py.init()
     screen = py.display.set_mode((WIDTH, HEIGHT))
     clock = py.time.Clock()
-    # game_state = chess_engine.game_state()
+    game_state = chess_engine.game_state()
     load_images()
     running = True
     square_selected = ()  # keeps track of the last selected square
@@ -122,7 +117,7 @@ def main():
 
     ai = ai_engine.chess_ai()
     game_state = chess_engine.game_state()
-    if human_player == 'b':
+    if human_player is 'b':
         ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
         game_state.move_piece(ai_move[0], ai_move[1], True)
 
@@ -154,10 +149,10 @@ def main():
                             player_clicks = []
                             valid_moves = []
 
-                            if human_player == 'w':
+                            if human_player is 'w':
                                 ai_move = ai.minimax_white(game_state, 3, -100000, 100000, True, Player.PLAYER_2)
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
-                            elif human_player == 'b':
+                            elif human_player is 'b':
                                 ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
                     else:
@@ -192,7 +187,7 @@ def main():
         clock.tick(MAX_FPS)
         py.display.flip()
 
-    # elif human_player == 'w':
+    # elif human_player is 'w':
     #     ai = ai_engine.chess_ai()
     #     game_state = chess_engine.game_state()
     #     valid_moves = []
@@ -223,7 +218,7 @@ def main():
     #                             player_clicks = []
     #                             valid_moves = []
     #
-    #                             ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_2)
+    #                             ai_move = ai.minimax(game_state, 3, -100000, 100000, True, Player.PLAYER_2)
     #                             game_state.move_piece(ai_move[0], ai_move[1], True)
     #                     else:
     #                         valid_moves = game_state.get_valid_moves((row, col))
@@ -256,7 +251,7 @@ def main():
     #         clock.tick(MAX_FPS)
     #         py.display.flip()
     #
-    # elif human_player == 'b':
+    # elif human_player is 'b':
     #     pass
 
 
