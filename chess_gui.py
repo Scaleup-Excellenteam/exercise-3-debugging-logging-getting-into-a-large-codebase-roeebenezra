@@ -18,6 +18,7 @@ SQ_SIZE = HEIGHT // DIMENSION  # the size of each of the squares in the board
 MAX_FPS = 15  # FPS for animations
 IMAGES = {}  # images for the chess pieces
 colors = [py.Color("white"), py.Color("gray")]
+last_move = False
 
 
 # TODO: AI black has been worked on. Mirror progress for other two modes
@@ -150,7 +151,7 @@ def main():
                             valid_moves = []
                         else:
                             game_state.move_piece((player_clicks[0][0], player_clicks[0][1]),
-                                                  (player_clicks[1][0], player_clicks[1][1]), False)
+                                                  (player_clicks[1][0], player_clicks[1][1]), False, True)
                             square_selected = ()
                             player_clicks = []
                             valid_moves = []

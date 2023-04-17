@@ -4,6 +4,7 @@
 #
 # Note: move log class inspired by Eddie Sharick
 #
+import chess_gui
 from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
 import logging
@@ -224,15 +225,17 @@ class game_state:
         all_black_moves = self.get_all_legal_moves(Player.PLAYER_2)
         if self._is_check and self.whose_turn() and not all_white_moves:
             print("white lost")
-            logging.debug('White wins')
-            logging.info('Knights Moves:{}'.format(knight_moves_counter))
+            logging.info('White wins')
+            logging.info('Knights Moves: {}'.format(knight_moves_counter))
             return 0
         elif self._is_check and not self.whose_turn() and not all_black_moves:
             print("black lost")
-            logging.debug('Black wins')
+            logging.info('Black wins')
+            logging.info('Knights Moves: {}'.format(knight_moves_counter))
             return 1
         elif not all_white_moves and not all_black_moves:
-            logging.debug('Stalemate')
+            logging.info('Stalemate')
+            logging.info('Knights Moves: {}'.format(knight_moves_counter))
             return 2
         else:
             return 3
@@ -314,7 +317,7 @@ class game_state:
         return self._en_passant_previous
 
     # Move a piece
-    def move_piece(self, starting_square, ending_square, is_ai):
+    def move_piece(self, starting_square, ending_square, is_ai, last_move=False):
         global knight_moves_counter
         current_square_row = starting_square[0]  # The integer row value of the starting square
         current_square_col = starting_square[1]  # The integer col value of the starting square
@@ -373,7 +376,6 @@ class game_state:
                             self.white_king_can_castle[0] = False
                         self._white_king_location = (next_square_row, next_square_col)
                     else:
-                        knight_moves_counter += 1
                         if moved_to_piece == Player.EMPTY and next_square_col == 1 and self.king_can_castle_left(
                                 moving_piece.get_player()):
                             move = chess_move(starting_square, ending_square, self, self._is_check)
@@ -473,6 +475,9 @@ class game_state:
                     moving_piece.change_col_number(next_square_col)
                     self.board[next_square_row][next_square_col] = self.board[current_square_row][current_square_col]
                     self.board[current_square_row][current_square_col] = Player.EMPTY
+                    if moving_piece.get_name() is "n" and ((last_move and is_ai) or not is_ai):
+                        knight_moves_counter += 1
+                        print(f'Knight moves: {knight_moves_counter}')
 
                 self.white_turn = not self.white_turn
 
