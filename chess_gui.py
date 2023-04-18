@@ -10,6 +10,7 @@ import pygame as py
 import ai_engine
 from enums import Player
 import logging
+import os
 
 """Variables"""
 WIDTH = HEIGHT = 512  # width and height of the chess board
@@ -270,8 +271,5 @@ def draw_text(screen, text):
 
 
 if __name__ == "__main__":
+    os.remove("chess.log")
     main()
-    logging.info('Knights Moves:{}'.format(chess_engine.knight_moves_counter))
-
-    import os
-    # os.remove("chess.log")
