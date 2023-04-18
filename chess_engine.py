@@ -31,6 +31,18 @@ def logging_add(wins_str):
     logging.info('Knights Moves: {}'.format(game_state.knight_moves_counter))
     logging.info('Black survive together turns: {}'.format(game_state.black_survive_turns_together))
     logging.info('White survive together turns: {}'.format(game_state.white_survive_turns_together))
+    logging.info('Checks count: {}'.format(game_state.checks_counter))
+
+
+def board_state(w_pieces, b_pieces):
+    board = "\n=================== Board State ===================\n"
+    board += "\n========= white pieces =========\n"
+    for piece in w_pieces:
+        board += "Piece {} of {} player\n".format(piece.__class__.__name__, piece.get_player())
+    board += "========= black pieces =========\n"
+    for piece in b_pieces:
+        board += "Piece {} of {} player\n".format(piece.__class__.__name__, piece.get_player())
+    return board
 
 
 class game_state:
@@ -129,6 +141,12 @@ class game_state:
     def get_piece(self, row, col):
         if (0 <= row < 8) and (0 <= col < 8):
             return self.board[row][col]
+
+    def get_white_pieces(self):
+        return self.white_pieces
+
+    def get_black_pieces(self):
+        return self.black_pieces
 
     def is_valid_piece(self, row, col):
         evaluated_piece = self.get_piece(row, col)
@@ -492,6 +510,9 @@ class game_state:
                             game_state.black_survive_turns_together += 1
                         if game_state.white_together:
                             game_state.white_survive_turns_together += 1
+                        if self._is_check:
+                            game_state.checks_counter += 1
+                        logging.info(board_state(game_state.get_white_pieces(self), game_state.get_black_pieces(self)))
 
                     moving_piece.change_row_number(next_square_row)
                     moving_piece.change_col_number(next_square_col)

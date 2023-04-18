@@ -55,6 +55,10 @@ class Piece:
     def get_valid_piece_moves(self, board):
         pass
 
+    @property
+    def name(self):
+        return self._name
+
 
 # Rook (R)
 class Rook(Piece):
