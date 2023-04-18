@@ -18,7 +18,6 @@ SQ_SIZE = HEIGHT // DIMENSION  # the size of each of the squares in the board
 MAX_FPS = 15  # FPS for animations
 IMAGES = {}  # images for the chess pieces
 colors = [py.Color("white"), py.Color("gray")]
-last_move = False
 
 
 # TODO: AI black has been worked on. Mirror progress for other two modes
@@ -124,7 +123,7 @@ def main():
     if human_player is 'b':
         logging.debug('ai starts game as white')
         ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
-        game_state.move_piece(ai_move[0], ai_move[1], True)
+        game_state.move_piece(ai_move[0], ai_move[1], True, True)
     else:
         logging.debug('human_player starts game as white')
 
@@ -158,10 +157,10 @@ def main():
 
                             if human_player is 'w':
                                 ai_move = ai.minimax_white(game_state, 3, -100000, 100000, True, Player.PLAYER_2)
-                                game_state.move_piece(ai_move[0], ai_move[1], True)
+                                game_state.move_piece(ai_move[0], ai_move[1], True, True)
                             elif human_player is 'b':
                                 ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
-                                game_state.move_piece(ai_move[0], ai_move[1], True)
+                                game_state.move_piece(ai_move[0], ai_move[1], True, True)
                     else:
                         valid_moves = game_state.get_valid_moves((row, col))
                         if valid_moves is None:
