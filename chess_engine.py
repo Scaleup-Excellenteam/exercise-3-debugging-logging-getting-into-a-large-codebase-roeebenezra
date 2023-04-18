@@ -26,11 +26,21 @@ r \ c     0           1           2           3           4           5         
 # TODO: stalemate
 # TODO: move logs - fix king castle boolean update
 # TODO: change move method argument about is_ai into something more elegant
+def logging_add(wins_str):
+    logging.info(wins_str)
+    logging.info('Knights Moves: {}'.format(game_state.knight_moves_counter))
+    logging.info('Black survive together turns: {}'.format(game_state.black_survive_turns_together))
+    logging.info('White survive together turns: {}'.format(game_state.white_survive_turns_together))
+
+
 class game_state:
     # logging vars
     knight_moves_counter = 0
     black_survive_turns_together = 0
+    black_together = True
     white_survive_turns_together = 0
+    white_together = True
+    checks_counter = 0
 
     # Initialize 2D array to represent the chess board
     def __init__(self):
@@ -227,17 +237,14 @@ class game_state:
         all_black_moves = self.get_all_legal_moves(Player.PLAYER_2)
         if self._is_check and self.whose_turn() and not all_white_moves:
             print("white lost")
-            logging.info('White wins')
-            logging.info('Knights Moves: {}'.format(game_state.knight_moves_counter))
+            logging_add('White wins')
             return 0
         elif self._is_check and not self.whose_turn() and not all_black_moves:
             print("black lost")
-            logging.info('Black wins')
-            logging.info('Knights Moves: {}'.format(game_state.knight_moves_counter))
+            logging_add('Black wins')
             return 1
         elif not all_white_moves and not all_black_moves:
-            logging.info('Stalemate')
-            logging.info('Knights Moves: {}'.format(game_state.knight_moves_counter))
+            logging_add('Stalemate')
             return 2
         else:
             return 3
@@ -471,8 +478,21 @@ class game_state:
                     self.can_en_passant_bool = False
 
                 if temp:
-                    if moving_piece.get_name() is "n" and ((last_move and is_ai) or not is_ai):
-                        game_state.knight_moves_counter += 1
+                    if (last_move and is_ai) or not is_ai:
+                        opponent_player = Player.PLAYER_2 if self.white_turn else Player.PLAYER_1
+                        if moving_piece.get_name() is "n":
+                            game_state.knight_moves_counter += 1
+                        if self.board[next_square_row][next_square_col] != Player.EMPTY:
+                            if self.board[next_square_row][next_square_col].is_player(opponent_player):
+                                if opponent_player is Player.PLAYER_2:
+                                    game_state.black_together = False
+                                else:
+                                    game_state.white_together = False
+                        if game_state.black_together:
+                            game_state.black_survive_turns_together += 1
+                        if game_state.white_together:
+                            game_state.white_survive_turns_together += 1
+
                     moving_piece.change_row_number(next_square_row)
                     moving_piece.change_col_number(next_square_col)
                     self.board[next_square_row][next_square_col] = self.board[current_square_row][current_square_col]
