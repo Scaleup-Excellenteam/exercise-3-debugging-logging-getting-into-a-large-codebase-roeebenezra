@@ -1,0 +1,23 @@
+from chess_engine import game_state
+from enums import Player
+from Piece import Knight
+
+
+def test_knight_get_valid_peaceful_moves():
+    # Set up the game state
+    gs = game_state()
+
+    # Set up the knight
+    white_knight = Knight('n', 3, 4, Player.PLAYER_2)
+
+    # Set Knight on the board
+    gs.board = [[Player.EMPTY for _ in range(8)] for _ in range(8)]
+    gs.board[3][4] = white_knight
+
+    # Get the moves for the knight
+    moves = white_knight.get_valid_peaceful_moves(gs)
+
+    # # Assert that the expected moves are in the list
+    expected_moves = [(1, 3), (1, 5), (2, 2), (2, 6), (4, 2), (4, 6), (5, 3), (5, 5)]
+
+    assert set(moves) == set(expected_moves)
