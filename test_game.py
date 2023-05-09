@@ -42,3 +42,19 @@ def test_knight_valid_peaceful_moves_blocked():
     expected_moves = [(2, 2), (2, 6), (4, 2), (4, 6), (5, 3), (5, 5)]
 
     assert set(moves) == set(expected_moves)
+
+
+def test_knight_valid_peace_takes():
+    # Set up the game state
+    gs = game_state()
+
+    # Set up the knight
+    white_knight = Knight('n', 3, 4, Player.PLAYER_2)
+
+    # Get the takes moves for the knight
+    moves = white_knight.get_valid_piece_takes(gs)
+
+    # # Assert that the expected moves are in the list
+    expected_moves = [(1, 3), (1, 5)]
+
+    assert set(moves) == set(expected_moves)
