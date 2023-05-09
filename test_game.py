@@ -78,7 +78,6 @@ class TestChessEngine(unittest.TestCase):
         evaluate_board = chess_ai().evaluate_board(self.gs, Player.PLAYER_2)
         assert evaluate_board == 10
 
-
     # evaluate_board test for white player
     def test_evaluate_board_white_player(self):
         self.gs.board[1][0] = Player.EMPTY  # Remove opponent pawn, +10 points
