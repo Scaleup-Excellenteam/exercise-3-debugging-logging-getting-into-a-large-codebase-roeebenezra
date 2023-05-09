@@ -89,6 +89,6 @@ class TestChessEngine(unittest.TestCase):
         self.gs.move_piece((1, 2), (2, 2), False)  # Move white pawn
         self.gs.move_piece((6, 3), (5, 3), False)  # Move black pawn
         self.gs.move_piece((1, 1), (3, 1), False)  # Move white pawn
-        self.gs.move_piece((7, 4), (3, 0), False)  # Move black pawn
+        self.gs.move_piece((7, 4), (3, 0), False)  # Move black queen
         # Check if the black player created checkmate
         assert self.gs.checkmate_stalemate_checker() == 0
