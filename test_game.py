@@ -83,3 +83,12 @@ class TestChessEngine(unittest.TestCase):
         self.gs.board[1][0] = Player.EMPTY  # Remove opponent pawn, +10 points
         evaluate_board = chess_ai().evaluate_board(self.gs, Player.PLAYER_1)
         assert evaluate_board == 10
+
+    # System tests
+    def test_stupid_mate(self):
+        self.gs.move_piece((1, 2), (2, 2), False)  # Move white pawn
+        self.gs.move_piece((6, 3), (5, 3), False)  # Move black pawn
+        self.gs.move_piece((1, 1), (3, 1), False)  # Move white pawn
+        self.gs.move_piece((7, 4), (3, 0), False)  # Move black pawn
+        # Check if the black player created checkmate
+        assert self.gs.checkmate_stalemate_checker() == 0
