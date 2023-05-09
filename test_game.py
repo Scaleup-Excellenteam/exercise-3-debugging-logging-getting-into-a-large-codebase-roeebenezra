@@ -72,7 +72,14 @@ class TestChessEngine(unittest.TestCase):
 
         assert set(moves) == set(expected_moves)
 
+    # evaluate_board test for black player
     def test_evaluate_board_black_player(self):
         self.gs.board[6][0] = Player.EMPTY  # Remove opponent pawn, +10 points
         evaluate_board = chess_ai().evaluate_board(self.gs, Player.PLAYER_2)
+        assert evaluate_board == 10
+
+    # evaluate_board test for white player
+    def test_evaluate_board_white_player(self):
+        self.gs.board[1][0] = Player.EMPTY  # Remove opponent pawn, +10 points
+        evaluate_board = chess_ai().evaluate_board(self.gs, Player.PLAYER_1)
         assert evaluate_board == 10
