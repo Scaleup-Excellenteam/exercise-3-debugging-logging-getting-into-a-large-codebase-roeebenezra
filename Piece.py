@@ -187,7 +187,7 @@ class Knight(Piece):
         # for i in range(0, 8):
         #     new_row = current_square_row + row_change[i]
         #     new_col = current_square_col + col_change[i]
-        #     evaluating_square = board.get_piece(new_row, new_col)
+        #     evaluating_square = board.get_piece(new_row, netest_w_col)
         #     # when the square with new_row and new_col is empty
         #     if evaluating_square == Player.EMPTY:
         #         _moves.append((new_row, new_col))
